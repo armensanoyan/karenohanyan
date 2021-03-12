@@ -9,7 +9,7 @@ import { useTranslation, initReactI18next } from "react-i18next";
 
 import './App.css';
 import { transtationObject } from './translations/translations'
-import { MenuBar } from './menu.js'
+import { MenuBar } from './menu/menu.js'
 import  { yearsCounter } from './data/index'
 import {
   HomePage, 
@@ -30,12 +30,8 @@ function App() {
   
   const [albumState, setAlbumState] = useState({})
   let [imgState, setImgState] = useState(0)
-  // In case of realoding or reopening site on works page display works/albums 
   
-  var album_name = ''
-  album_name = window.location.pathname.split('/')[1]
-  console.log(album_name)
-
+  // In case of realoding or reopening site on works page display works/albums 
   useEffect( () => {
     if (window.location.pathname.includes('20')) {
       document.getElementById('works').style.display = 'block' 
@@ -49,17 +45,6 @@ function App() {
     const language = e.target.id
     i18n.changeLanguage(language)
   } 
-
-  function displayWorks() {
-    document.getElementById('works').style.display = 'block'
-    document.getElementById('album_box').style.display = 'flex'
-  }
-
-  function hideWorks() {
-    document.getElementById('works').style.display = 'none'
-    document.getElementById('album_box').style.display = 'none'
-
-  }
 
   function handleMenu() {
     document.querySelector('.hamburger').classList.toggle('active')
@@ -110,9 +95,7 @@ function App() {
 
       <MenuBar 
         handleLanguage={handleLanguage} 
-        hideWorks={hideWorks} 
         t={t}
-        displayWorks={displayWorks}
         handleAlbum = {handleAlbum}
       />
 

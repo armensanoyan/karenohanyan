@@ -1,10 +1,20 @@
 import {Link} from "react-router-dom";
 
-import { album_list } from './data/albums.data'
-// import { WorksPage } from "./pages";
-
+import { album_list } from '../data/albums.data'
 
 export function MenuBar(props) {
+
+  function displayWorks() {
+    document.getElementById('works').style.display = 'block'
+    document.getElementById('album_box').style.display = 'flex'
+  }
+
+  function hideWorks() {
+    document.getElementById('works').style.display = 'none'
+    document.getElementById('album_box').style.display = 'none'
+
+  }
+
     return (
     <div className='menulist'>
           <div className="languages ">
@@ -16,25 +26,25 @@ export function MenuBar(props) {
           </div>
           <ul>
             <li>
-              <Link to='/' onClick={props.hideWorks}>{props.t('menu.home')}</Link>
+              <Link to='/' onClick={hideWorks}>{props.t('menu.home')}</Link>
             </li>
-            <li style={{cursor: "pointer"}} onClick={props.displayWorks}>
+            <li style={{cursor: "pointer"}} onClick={displayWorks}>
                 {props.t('menu.work')}
             </li>
             <li>
                 <Works t={props.t} handleAlbum={props.handleAlbum}/>
             </li>
             <li>
-              <Link to={props.t('menu.articles')} onClick={props.hideWorks}>{props.t('menu.articles')}</Link>
+              <Link to={props.t('menu.articles')} onClick={hideWorks}>{props.t('menu.articles')}</Link>
             </li>
             <li>
-              <Link to={props.t('menu.biography')} onClick={props.hideWorks}>{props.t('menu.biography')}</Link>
+              <Link to={props.t('menu.biography')} onClick={hideWorks}>{props.t('menu.biography')}</Link>
             </li>
             <li>
-              <Link to={props.t('menu.exhibitions')} onClick={props.hideWorks}>{props.t('menu.exhibitions')}</Link>
+              <Link to={props.t('menu.exhibitions')} onClick={hideWorks}>{props.t('menu.exhibitions')}</Link>
             </li>
             <li>
-              <Link to={props.t('menu.contacts')} onClick={props.hideWorks}>{props.t('menu.contacts')}</Link>
+              <Link to={props.t('menu.contacts')} onClick={hideWorks}>{props.t('menu.contacts')}</Link>
             </li>
           </ul>
         </div>
