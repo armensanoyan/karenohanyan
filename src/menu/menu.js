@@ -1,7 +1,7 @@
 import {Link} from "react-router-dom";
 
 import { album_list } from '../data/albums.data'
-import { SiteContext } from '../provider/LanguageProvider'
+import { SiteContext } from '../providers/LanguageProvider'
 
 export function MenuBar(props) {
 

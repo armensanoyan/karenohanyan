@@ -1,4 +1,4 @@
-import { SiteContext } from '../provider/LanguageProvider'
+import { SiteContext } from '../providers/LanguageProvider'
 
 
 export function NavBar() {

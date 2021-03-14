@@ -10,7 +10,7 @@ import { useTranslation, initReactI18next } from "react-i18next";
 import './App.css';
 import { transtationObject } from './translations/translations'
 import { MenuBar } from './menu/Menu.js'
-import { LanguageProvider } from './provider/LanguageProvider'
+import { LanguageProvider } from './providers/LanguageProvider'
 import { yearsCounter } from './data/index'
 import {
   HomePage, 
@@ -60,7 +60,7 @@ function App() {
   
   // move to Album component
   function handleImage(e) {
-    setImgState(e.target.id)
+    setImgState(parseInt(e.target.id))
   }
   
   // move to WorksPage
@@ -72,7 +72,8 @@ function App() {
     }
   }
   // move to WorksPage
-  function handleRight(e) {
+  function handleRight() {
+    console.log('img before handleright', imgState)
     if (imgState < albumState.length - 1) {
       setImgState(imgState+1)
     } else {
@@ -89,11 +90,11 @@ function App() {
   return (
     <div className="grid_body">
     <LanguageProvider language='en'>
-    <Router>
       <NavBar />
-      <MenuBar 
-        handleAlbum = {handleAlbum}
-      />
+      <Router>
+        <MenuBar 
+          handleAlbum = {handleAlbum}
+        />
 
       <Switch>
         {album_list.map( (album) => {
