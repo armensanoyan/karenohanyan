@@ -9,8 +9,9 @@ import { useTranslation, initReactI18next } from "react-i18next";
 
 import './App.css';
 import { transtationObject } from './translations/translations'
-import { MenuBar } from './menu/menu.js'
-import  { yearsCounter } from './data/index'
+import { MenuBar } from './menu/Menu.js'
+import { LanguageProvider } from './provider/LanguageProvider'
+import { yearsCounter } from './data/index'
 import {
   HomePage, 
   ExhibitionsPage,
@@ -18,50 +19,51 @@ import {
   ArticlesPage,
   WorksPage,
   ContactsPage,
-} from './pages.js'
+} from './pages/pages.js'
 import { album_list } from "./data/albums.data";
 import * as all_images from './data/images.data'
+import { NavBar } from "./menu/NavBar";
 
 i18n
   .use(initReactI18next) // passes i18n down to react-i18next
   .init(transtationObject);
 
+
 function App() {
   
-  const [albumState, setAlbumState] = useState({})
+  const pathname = window.location.pathname.split('/')[1]
+  const { t } = useTranslation();
+  const images = pathname.includes('20') ? getAlbum(pathname) : {}
+  let [albumState, setAlbumState] = useState(images)
   let [imgState, setImgState] = useState(0)
   
-  // In case of realoding or reopening site on works page display works/albums 
+  // In case of realoding or reopening site, on works page, display works/albums 
+  // should display the images in album
   useEffect( () => {
-    if (window.location.pathname.includes('20')) {
+    if (pathname.includes('20')) {
       document.getElementById('works').style.display = 'block' 
     } else {
       document.getElementById('works').style.display = 'none' 
     }
   })
   
-  const { t } = useTranslation();
-  function handleLanguage(e) {
-    const language = e.target.id
-    i18n.changeLanguage(language)
-  } 
-
-  function handleMenu() {
-    document.querySelector('.hamburger').classList.toggle('active')
-    document.querySelector('.menulist').classList.toggle('open')
-  }
-
-  function handleAlbum(years) {
+  function getAlbum(years) {
     const years_array = years.split('-')
     const imgs = years_array.length > 1 ? yearsCounter.byYears(years_array) : yearsCounter.byYear(years_array)
-    setAlbumState(imgs)
+    return imgs
+  }
+
+  // move to MenuPage
+  function handleAlbum(years) {
+    setAlbumState(getAlbum(years))
   }
   
+  // move to Album component
   function handleImage(e) {
-    console.log('handling it', e.target.id)
     setImgState(e.target.id)
   }
   
+  // move to WorksPage
   function handleBack(e) {
     if (imgState > 0) {
       setImgState(imgState-1)
@@ -69,39 +71,32 @@ function App() {
       setImgState(albumState.length-1)
     }
   }
+  // move to WorksPage
   function handleRight(e) {
     if (imgState < albumState.length - 1) {
       setImgState(imgState+1)
     } else {
       setImgState(0)
     }
-
   }
 
   function getDefaultImage(album) {
+    // use find inplace of filter
     const  img = all_images.default.filter( image => image.fileName.includes(album.defaultImage) )[0]
     return img
   }
   
   return (
     <div className="grid_body">
+    <LanguageProvider language='en'>
     <Router>
-      <div className='nav_bar'>
-        <h1 className='heroname'>{t('name')}</h1>
-        <div onClick={handleMenu} className="hamburger">
-          <div className="line" id="bulk"></div>
-        </div>
-        </div>
-
+      <NavBar />
       <MenuBar 
-        handleLanguage={handleLanguage} 
-        t={t}
         handleAlbum = {handleAlbum}
       />
 
       <Switch>
-        {album_list.map( (album, index) => {
-          
+        {album_list.map( (album) => {
           return (
             <Route path={`/${album.href}`} className='img_box'> 
               <WorksPage 
@@ -109,7 +104,6 @@ function App() {
                 handleRight={handleRight}
                 handleBack={handleBack}
                 album={album}
-                language={i18n.language}
               />
             </Route>
           )
@@ -123,6 +117,7 @@ function App() {
     </Router>
 
     <Album imgs={albumState} handleImage={handleImage}/>
+    </LanguageProvider>
     </div>
   )
 }

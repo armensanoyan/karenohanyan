@@ -42,7 +42,7 @@ export const transtationObject = {
           }
         }
       },
-      arm: {
+      hy: {
         translation: {
           "name": "Կարեն Օհանյան",
           menu: {
